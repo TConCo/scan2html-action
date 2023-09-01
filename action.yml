@@ -68,11 +68,11 @@ runs:
          }  >>"$auditing_item"
         
          echo "$auditing_item has been created!"
-    - name: Checkout folder "${{ auditing-folder-path }}" on branch "${{ auditing-branch }}" 🛎️
+    - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
       uses: actions/checkout@v3
       with:
-        ref: ${{ auditing-branch }}
-        path: ${{ auditing-folder-path }}
+        ref: ${{ inputs.auditing-branch }}
+        path: ${{ inputs.auditing-folder-path }}
     - name: Adding Scan Details to Audit db
       shell: bash
       run: |
@@ -103,10 +103,10 @@ runs:
         echo "$temp_audit_file has been created!"
         # remove tmp
         rm -f $auditing_item
-    - name: Deploy folder "${{ auditing-folder-path }}" to branch "${{ auditing-branch }}" 🚀
+    - name: Deploy folder "${{ inputs.auditing-folder-path }}" to branch "${{ inputs.auditing-branch }}" 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: ${{ auditing-folder-path }}
+        folder: ${{ inputs.auditing-folder-path }}
         clean: false
 branding:
   icon: "git-pull-request"

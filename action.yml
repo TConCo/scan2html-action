@@ -24,90 +24,90 @@ runs:
       shell: bash
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
-    # - id: parameters
-    #   shell: bash
-    #   run: |
-    #     SCAN_RESULT_FOLDER="auditing/scan-results"
-    #     EVENT_FOLDER="auditing/events"
-    #     AUDITING_ITEM="auditing/auditing_item.json"
-    #     TEMP_AUDIT_FILE="auditing/temp_auditing.json"
-    #     AUDIT_FILE="gh-pages/auditing/auditing.json"
+    - id: parameters
+      shell: bash
+      run: |
+        SCAN_RESULT_FOLDER="auditing/scan-results"
+        EVENT_FOLDER="auditing/events"
+        AUDITING_ITEM="auditing/auditing_item.json"
+        TEMP_AUDIT_FILE="auditing/temp_auditing.json"
+        AUDIT_FILE="gh-pages/auditing/auditing.json"
       
-    #     ACTION_START_TIME=$(date +%s)
-    #     echo "ACTION_START_TIME=$ACTION_START_TIME" >> $GITHUB_OUTPUT
+        ACTION_START_TIME=$(date +%s)
+        echo "ACTION_START_TIME=$ACTION_START_TIME" >> $GITHUB_OUTPUT
        
-    #     SCAN_RESULT="$SCAN_RESULT_FOLDER/result-$ACTION_START_TIME.json"
-    #     echo "SCAN_RESULT=$SCAN_RESULT" >> $GITHUB_OUTPUT
-    #     EVENT_DETAIL="$event_folder/event-$ACTION_START_TIME.json"
-    #     echo "EVENT_DETAIL=$EVENT_DETAIL" >> $GITHUB_OUTPUT
-    # - name: Storing scan results
-    #   shell: bash
-    #   run: |
-    #     cat "${{ inputs.scan-results-file }}" >>"${{steps.run_tests.outputs.SCAN_RESULT}}"
-    #     echo "${{steps.run_tests.outputs.SCAN_RESULT}} has been created!"
-    # - name: Storing event details
-    #   id: store_event_details
-    #   shell: bash
-    #   run: |
-    #     cat ${{ github.event_path }}>>"${{steps.run_tests.outputs.EVENT_DETAIL}}"    
-    #     echo "${{steps.run_tests.outputs.EVENT_DETAIL}} has been created!"
-    # - name: Creating Scan Details
-    #   shell: bash
-    #   run: |
-    #     cat 
-    #     {
-    #        echo '{'
-    #        echo '"Id": "${{steps.parameters.outputs.ACTION_START_TIME}}",'
-    #        echo '"Url": "${{steps.parameters.outputs.SCAN_RESULT}}",'
-    #        echo '"Sha": "${{ github.sha }}",'
-    #        echo '"Initiator": "${{ github.triggering_actor }}",'
-    #        echo '"Ref": "${{ github.ref }}",'
-    #        echo '"Event_Name": "${{ github.event_name }}",'
-    #        echo '"Event_Path": "${{ steps.parameters.outputs.EVENT_DETAIL }}"'
-    #        echo '},'
-    #      }  >>"$auditing_item"
+        SCAN_RESULT="$SCAN_RESULT_FOLDER/result-$ACTION_START_TIME.json"
+        echo "SCAN_RESULT=$SCAN_RESULT" >> $GITHUB_OUTPUT
+        EVENT_DETAIL="$event_folder/event-$ACTION_START_TIME.json"
+        echo "EVENT_DETAIL=$EVENT_DETAIL" >> $GITHUB_OUTPUT
+    - name: Storing scan results
+      shell: bash
+      run: |
+        cat "${{ inputs.scan-results-file }}" >>"${{steps.parameters.outputs.SCAN_RESULT}}"
+        echo "${{steps.parameters.outputs.SCAN_RESULT}} has been created!"
+    - name: Storing event details
+      id: store_event_details
+      shell: bash
+      run: |
+        cat ${{ github.event_path }}>>"${{steps.parameters.outputs.EVENT_DETAIL}}"    
+        echo "${{steps.parameters.outputs.EVENT_DETAIL}} has been created!"
+    - name: Creating Scan Details
+      shell: bash
+      run: |
+        cat 
+        {
+           echo '{'
+           echo '"Id": "${{steps.parameters.outputs.ACTION_START_TIME}}",'
+           echo '"Url": "${{steps.parameters.outputs.SCAN_RESULT}}",'
+           echo '"Sha": "${{ github.sha }}",'
+           echo '"Initiator": "${{ github.triggering_actor }}",'
+           echo '"Ref": "${{ github.ref }}",'
+           echo '"Event_Name": "${{ github.event_name }}",'
+           echo '"Event_Path": "${{ steps.parameters.outputs.EVENT_DETAIL }}"'
+           echo '},'
+         }  >>"$auditing_item"
         
-    #      echo "$auditing_item has been created!"
-    # - name: Checkout folder "${{ auditing-folder-path }}" on branch "${{ auditing-branch }}" 🛎️
-    #   uses: actions/checkout@v3
-    #   with:
-    #     ref: ${{ auditing-branch }}
-    #     path: ${{ auditing-folder-path }}
-    # - name: Adding Scan Details to Audit db
-    #   shell: bash
-    #   run: |
-    #     audit_file_content="abc.json"
-    #     if [ -f $audit_file ]; then
-    #        echo "$audit_file does exist!"
-    #        cat "$audit_file" >>"$audit_file_content"
-    #     fi
-    #     if [ ! -f $audit_file ]; then
-    #        echo "$audit_file doesn't exist, creating an empty one!"
-    #        cat 
-    #         {
-    #          echo '{'
-    #          echo '"Pushes" : ['
-    #          echo ']}'
+         echo "$auditing_item has been created!"
+    - name: Checkout folder "${{ auditing-folder-path }}" on branch "${{ auditing-branch }}" 🛎️
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ auditing-branch }}
+        path: ${{ auditing-folder-path }}
+    - name: Adding Scan Details to Audit db
+      shell: bash
+      run: |
+        audit_file_content="abc.json"
+        if [ -f $audit_file ]; then
+           echo "$audit_file does exist!"
+           cat "$audit_file" >>"$audit_file_content"
+        fi
+        if [ ! -f $audit_file ]; then
+           echo "$audit_file doesn't exist, creating an empty one!"
+           cat 
+            {
+             echo '{'
+             echo '"Pushes" : ['
+             echo ']}'
         
-    #        }  >>"$audit_file_content"
-    #     fi
+           }  >>"$audit_file_content"
+        fi
         
-    #     # copy audit file except the last line which is '}' character of json 
-    #     head -n -1 "$audit_file_content" > "$temp_audit_file"
-    #     cat "$auditing_item" >>"$temp_audit_file"
-    #     cat 
-    #     {
-    #        echo ''
-    #        echo ']}'
-    #      } >>"$temp_audit_file"
-    #     echo "$temp_audit_file has been created!"
-    #     # remove tmp
-    #     rm -f $auditing_item
-    # - name: Deploy folder "${{ auditing-folder-path }}" to branch "${{ auditing-branch }}" 🚀
-    #   uses: JamesIves/github-pages-deploy-action@v4
-    #   with:
-    #     folder: ${{ auditing-folder-path }}
-    #     clean: false
+        # copy audit file except the last line which is '}' character of json 
+        head -n -1 "$audit_file_content" > "$temp_audit_file"
+        cat "$auditing_item" >>"$temp_audit_file"
+        cat 
+        {
+           echo ''
+           echo ']}'
+         } >>"$temp_audit_file"
+        echo "$temp_audit_file has been created!"
+        # remove tmp
+        rm -f $auditing_item
+    - name: Deploy folder "${{ auditing-folder-path }}" to branch "${{ auditing-branch }}" 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: ${{ auditing-folder-path }}
+        clean: false
 branding:
   icon: "git-pull-request"
   color: "purple"

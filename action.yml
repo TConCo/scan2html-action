@@ -1,5 +1,6 @@
 name: 'Action for auditing Trivy scan results'
 description: 'This action automatically creates audit records for Trivy scan results'
+author: 'Fatih Tokus'
 inputs:
   scan-results-file:
     description: 'Where to find scan result json file'
@@ -100,3 +101,6 @@ runs:
       with:
         folder: ${{ auditing-folder-path }}
         clean: false
+branding:
+  icon: "git-pull-request"
+  color: "purple"

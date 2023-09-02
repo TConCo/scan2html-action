@@ -39,7 +39,7 @@ runs:
         TEMP_AUDITING_FILE="auditing/temp_auditing.json"
         echo "TEMP_AUDITING_FILE=$TEMP_AUDITING_FILE" >> $GITHUB_OUTPUT
         
-        AUDITING_FILE="gh-pages/auditing/auditing.json"
+        AUDITING_FILE="auditing/auditing.json"
         echo "AUDITING_FILE=$AUDITING_FILE" >> $GITHUB_OUTPUT    
         
         ACTION_START_TIME=$(date +%s)

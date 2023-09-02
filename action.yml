@@ -50,6 +50,11 @@ runs:
         
         EVENT_DETAIL="$EVENT_FOLDER/event-$ACTION_START_TIME.json"
         echo "EVENT_DETAIL=$EVENT_DETAIL" >> $GITHUB_OUTPUT
+    - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.auditing-branch }}
+        path: ${{ inputs.auditing-folder-path }}
     - name: Creating auditing folders
       shell: bash
       run: |
@@ -85,11 +90,6 @@ runs:
          }  >>"${{steps.parameters.outputs.AUDITING_ITEM}}"
         
          echo "${{steps.parameters.outputs.AUDITING_ITEM}} has been created!"
-    - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ inputs.auditing-branch }}
-        path: ${{ inputs.auditing-folder-path }}
     - name: Adding Scan Details to Audit db
       shell: bash
       run: |

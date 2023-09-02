@@ -36,11 +36,11 @@ runs:
         AUDITING_ITEM="auditing/auditing_item.json"
         echo "AUDITING_ITEM=$AUDITING_ITEM" >> $GITHUB_OUTPUT
         
-        TEMP_AUDIT_FILE="auditing/temp_auditing.json"
-        echo "TEMP_AUDIT_FILE=$TEMP_AUDIT_FILE" >> $GITHUB_OUTPUT
+        TEMP_AUDITING_FILE="auditing/temp_auditing.json"
+        echo "TEMP_AUDITING_FILE=$TEMP_AUDITING_FILE" >> $GITHUB_OUTPUT
         
-        AUDIT_FILE="gh-pages/auditing/auditing.json"
-        echo "AUDIT_FILE=$AUDIT_FILE" >> $GITHUB_OUTPUT    
+        AUDITING_FILE="gh-pages/auditing/auditing.json"
+        echo "AUDITING_FILE=$AUDITING_FILE" >> $GITHUB_OUTPUT    
         
         ACTION_START_TIME=$(date +%s)
         echo "ACTION_START_TIME=$ACTION_START_TIME" >> $GITHUB_OUTPUT
@@ -82,9 +82,9 @@ runs:
            echo '"Event_Name": "${{ github.event_name }}",'
            echo '"Event_Path": "${{ steps.parameters.outputs.EVENT_DETAIL }}"'
            echo '},'
-         }  >>"$auditing_item"
+         }  >>"${{steps.parameters.outputs.AUDITING_ITEM}}"
         
-         echo "$auditing_item has been created!"
+         echo "${{steps.parameters.outputs.AUDITING_ITEM}} has been created!"
     - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
       uses: actions/checkout@v3
       with:
@@ -94,12 +94,12 @@ runs:
       shell: bash
       run: |
         audit_file_content="abc.json"
-        if [ -f $audit_file ]; then
+        if [ -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
            echo "$audit_file does exist!"
            cat "$audit_file" >>"$audit_file_content"
         fi
-        if [ ! -f $audit_file ]; then
-           echo "$audit_file doesn't exist, creating an empty one!"
+        if [ ! -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
+           echo "${{steps.parameters.outputs.AUDITING_FILE}} doesn't exist, creating an empty one!"
            cat 
             {
              echo '{'
@@ -110,16 +110,16 @@ runs:
         fi
         
         # copy audit file except the last line which is '}' character of json 
-        head -n -1 "$audit_file_content" > "$temp_audit_file"
-        cat "$auditing_item" >>"$temp_audit_file"
+        head -n -1 "$audit_file_content" > "${{steps.parameters.outputs.AUDITING_FILE}}"
+        cat "${{steps.parameters.outputs.AUDITING_ITEM}}" >>"${{steps.parameters.outputs.TEMP_AUDITING_FILE}}"
         cat 
         {
            echo ''
            echo ']}'
-         } >>"$temp_audit_file"
-        echo "$temp_audit_file has been created!"
+         } >>"${{steps.parameters.outputs.TEMP_AUDITING_FILE}}"
+        echo "${{steps.parameters.outputs.TEMP_AUDITING_FILE}} has been created!"
         # remove tmp
-        rm -f $auditing_item
+        rm -f ${{steps.parameters.outputs.AUDITING_ITEM}}
     - name: Deploy folder "${{ inputs.auditing-folder-path }}" to branch "${{ inputs.auditing-branch }}" 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:

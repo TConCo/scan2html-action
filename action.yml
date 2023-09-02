@@ -50,6 +50,11 @@ runs:
         
         EVENT_DETAIL="$EVENT_FOLDER/event-$ACTION_START_TIME.json"
         echo "EVENT_DETAIL=$EVENT_DETAIL" >> $GITHUB_OUTPUT
+    - name: Checkout folder Scan2html 🛎️
+      uses: actions/checkout@v3
+      with:
+        repository: fatihtokus/scan2html
+        path: scan2html
     - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
       uses: actions/checkout@v3
       with:

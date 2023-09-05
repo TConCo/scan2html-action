@@ -17,13 +17,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
-      shell: bash
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
     - id: parameters
       shell: bash
       run: |
@@ -69,6 +62,12 @@ runs:
         echo "${{steps.parameters.outputs.SCAN_RESULT_FOLDER}} has been created!"
         mkdir -p ${{steps.parameters.outputs.EVENT_FOLDER}}
         echo "${{steps.parameters.outputs.EVENT_FOLDER}} has been created!"
+    - name: Copying static html and js files to the repo
+      shell: bash
+      run: |
+        echo "----Copying static html and js files to the repo------------------------------------------------------"
+        cp -v /scan2html/src/* /${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}/
+        echo "Static html and js files from /scan2html/src/* to ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}} has been copied!"
     - name: Storing scan results
       shell: bash
       run: |

@@ -49,11 +49,23 @@ runs:
       with:
         repository: fatihtokus/scan2html
         path: scan2html
+    - name: qqq
+      shell: bash
+      run: |
+        echo "----scan2html------------------------------------------------------"
+        pwd
+        ls
     - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
       uses: actions/checkout@v3
       with:
         ref: ${{ inputs.auditing-branch }}
         path: ${{ inputs.auditing-folder-path }}
+    - name: qqq1
+      shell: bash
+      run: |
+        echo "----auditing branch------------------------------------------------------"
+        pwd
+        ls
     - name: Creating auditing folders
       shell: bash
       run: |

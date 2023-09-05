@@ -27,6 +27,7 @@ runs:
     - id: parameters
       shell: bash
       run: |
+        echo "----PARAMETERS------------------------------------------------------"
         SCAN_RESULT_FOLDER="auditing/scan-results"
         echo "SCAN_RESULT_FOLDER=$SCAN_RESULT_FOLDER" >> $GITHUB_OUTPUT
         
@@ -63,6 +64,7 @@ runs:
     - name: Creating auditing folders
       shell: bash
       run: |
+        echo "----Creating auditing folders------------------------------------------------------"
         mkdir -p ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}
         echo "${{steps.parameters.outputs.SCAN_RESULT_FOLDER}} has been created!"
         mkdir -p ${{steps.parameters.outputs.EVENT_FOLDER}}
@@ -70,17 +72,20 @@ runs:
     - name: Storing scan results
       shell: bash
       run: |
+        echo "----Storing scan results------------------------------------------------------"
         cat "${{ inputs.scan-results-file }}" >>"${{steps.parameters.outputs.SCAN_RESULT}}"
         echo "${{steps.parameters.outputs.SCAN_RESULT}} has been created!"
     - name: Storing event details
       id: store_event_details
       shell: bash
       run: |
+        echo "----Storing event details------------------------------------------------------"
         cat ${{ github.event_path }}>>"${{steps.parameters.outputs.EVENT_DETAIL}}"    
         echo "${{steps.parameters.outputs.EVENT_DETAIL}} has been created!"
     - name: Creating Scan Details
       shell: bash
       run: |
+        echo "----Creating Scan Details------------------------------------------------------"
         cat 
         {
            echo '{'
@@ -98,6 +103,7 @@ runs:
     - name: Adding Scan Details to Audit db
       shell: bash
       run: |
+        echo "----Adding Scan Details to Audit db------------------------------------------------------"
         audit_file_content="abc.json"
         if [ -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
            echo "$audit_file does exist!"

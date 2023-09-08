@@ -55,6 +55,10 @@ runs:
         echo "----scan2html------------------------------------------------------"
         pwd
         ls
+        # find all files either in /data or /data/subdir
+        find  /scan2html -type f -maxdepth 4 | while read file; do
+          echo $file;
+        end
     - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
       uses: actions/checkout@v3
       with:

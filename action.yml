@@ -44,6 +44,12 @@ runs:
         
         EVENT_DETAIL="$EVENT_FOLDER/event-$ACTION_START_TIME.json"
         echo "EVENT_DETAIL=$EVENT_DETAIL" >> $GITHUB_OUTPUT
+     - name: qqq11
+      shell: bash
+      run: |
+        echo "----before scan2html------------------------------------------------------"
+        pwd
+        ls
     - name: Checkout folder Scan2html 🛎️
       uses: actions/checkout@v3
       with:

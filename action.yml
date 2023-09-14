@@ -61,6 +61,7 @@ runs:
         echo "----scan2html------------------------------------------------------"
         pwd
         ls
+        ls scan2html
         
         find /scan2html/ -type f -print0 | while read -d $'\0' file; do
           echo "Processing $file"

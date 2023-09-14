@@ -62,6 +62,7 @@ runs:
         pwd
         ls
         ls scan2html
+        ls scan2html/src
         
         find /scan2html/ -type f -print0 | while read -d $'\0' file; do
           echo "Processing $file"

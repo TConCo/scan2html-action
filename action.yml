@@ -63,10 +63,6 @@ runs:
         ls
         ls scan2html
         ls scan2html/src
-        
-        find /scan2html/ -type f -print0 | while read -d $'\0' file; do
-          echo "Processing $file"
-        done
     - name: Checkout folder "${{ inputs.auditing-folder-path }}" on branch "${{ inputs.auditing-branch }}" 🛎️
       uses: actions/checkout@v3
       with:
@@ -78,6 +74,8 @@ runs:
         echo "----auditing branch------------------------------------------------------"
         pwd
         ls
+        ls scan2html
+        ls scan2html/src
     - name: Creating auditing folders
       shell: bash
       run: |
@@ -90,7 +88,7 @@ runs:
       shell: bash
       run: |
         echo "----Copying static html and js files to the repo------------------------------------------------------"
-        cp -v /scan2html/src/* /${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}/
+        cp -v scan2html/src/* /${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}/
         echo "Static html and js files from /scan2html/src/* to ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}} has been copied!"
     - name: Storing scan results
       shell: bash

@@ -21,19 +21,19 @@ runs:
       shell: bash
       run: |
         echo "----PARAMETERS------------------------------------------------------"
-        SCAN_RESULT_FOLDER="auditing/scan-results"
+        SCAN_RESULT_FOLDER="${{ inputs.auditing-folder-path }}/scan-results"
         echo "SCAN_RESULT_FOLDER=$SCAN_RESULT_FOLDER" >> $GITHUB_OUTPUT
         
-        EVENT_FOLDER="auditing/events"
+        EVENT_FOLDER="${{ inputs.auditing-folder-path }}/events"
         echo "EVENT_FOLDER=$EVENT_FOLDER" >> $GITHUB_OUTPUT
         
-        AUDITING_ITEM="auditing/auditing_item.json"
+        AUDITING_ITEM="${{ inputs.auditing-folder-path }}/auditing_item.json"
         echo "AUDITING_ITEM=$AUDITING_ITEM" >> $GITHUB_OUTPUT
         
-        TEMP_AUDITING_FILE="auditing/temp_auditing.json"
+        TEMP_AUDITING_FILE="${{ inputs.auditing-folder-path }}/temp_auditing.json"
         echo "TEMP_AUDITING_FILE=$TEMP_AUDITING_FILE" >> $GITHUB_OUTPUT
         
-        AUDITING_FILE="auditing/auditing.json"
+        AUDITING_FILE="${{ inputs.auditing-folder-path }}/auditing.json"
         echo "AUDITING_FILE=$AUDITING_FILE" >> $GITHUB_OUTPUT    
         
         ACTION_START_TIME=$(date +%s)
@@ -88,8 +88,8 @@ runs:
       shell: bash
       run: |
         echo "----Copying static html and js files to the repo------------------------------------------------------"
-        cp -r -v scan2html/src/* ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}/
-        echo "Static html and js files from /scan2html/src/* to ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}} has been copied!"
+        cp -r -v scan2html/src/* ${{ inputs.auditing-folder-path }}/
+        echo "Static html and js files from scan2html/src/* to ${{ inputs.auditing-folder-path }} has been copied!"
     - name: Storing scan results
       shell: bash
       run: |

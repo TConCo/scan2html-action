@@ -88,7 +88,7 @@ runs:
       shell: bash
       run: |
         echo "----Copying static html and js files to the repo------------------------------------------------------"
-        cp -v scan2html/src/* ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}/
+        cp -r -v scan2html/src/* ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}}/
         echo "Static html and js files from /scan2html/src/* to ${{steps.parameters.outputs.SCAN_RESULT_FOLDER}} has been copied!"
     - name: Storing scan results
       shell: bash

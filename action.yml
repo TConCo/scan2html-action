@@ -144,15 +144,16 @@ runs:
         
         # copy audit file except the last line which is '}' character of json 
         head -n -1 "$audit_file_content" > "${{steps.parameters.outputs.AUDITING_FILE}}"
-        cat "${{steps.parameters.outputs.AUDITING_ITEM}}" >>"${{steps.parameters.outputs.TEMP_AUDITING_FILE}}"
+        cat "${{steps.parameters.outputs.AUDITING_ITEM}}" >>"${{steps.parameters.outputs.AUDITING_FILE}}"
         cat 
         {
            echo ''
            echo ']}'
-         } >>"${{steps.parameters.outputs.TEMP_AUDITING_FILE}}"
-        echo "${{steps.parameters.outputs.TEMP_AUDITING_FILE}} has been created!"
+         } >>"${{steps.parameters.outputs.AUDITING_FILE}}"
+        echo "${{steps.parameters.outputs.AUDITING_FILE}} has been created!"
         # remove tmp
         rm -f ${{steps.parameters.outputs.AUDITING_ITEM}}
+        rm -f $audit_file_content
     - name: Deploy folder "${{ inputs.auditing-folder-path }}" to branch "${{ inputs.auditing-branch }}" 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:

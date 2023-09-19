@@ -54,6 +54,7 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: fatihtokus/scan2html
+        ref: Issue-9
         path: scan2html 
     - name: qqq
       shell: bash
@@ -156,6 +157,7 @@ runs:
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: ${{ inputs.auditing-folder-path }}
+        branch: ${{ inputs.auditing-branch }}
         clean: false
 branding:
   icon: "git-pull-request"

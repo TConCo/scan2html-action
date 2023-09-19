@@ -128,8 +128,8 @@ runs:
         echo "----Adding Scan Details to Audit db------------------------------------------------------"
         audit_file_content="abc.json"
         if [ -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
-           echo "$audit_file does exist!"
-           cat "$audit_file" >>"$audit_file_content"
+           echo "${{steps.parameters.outputs.AUDITING_FILE}} does exist!"
+           cat "${{steps.parameters.outputs.AUDITING_FILE}}" >>"$audit_file_content"
         fi
         if [ ! -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
            echo "${{steps.parameters.outputs.AUDITING_FILE}} doesn't exist, creating an empty one!"

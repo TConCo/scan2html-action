@@ -27,6 +27,9 @@ runs:
         
         SCAN_RESULT_FOLDER="${{ inputs.auditing-folder-path }}/$SCAN_RESULT_FOLDER_RELATIVE_PATH"
         echo "SCAN_RESULT_FOLDER=$SCAN_RESULT_FOLDER" >> $GITHUB_OUTPUT
+
+        EVENT_FOLDER_FOLDER_RELATIVE_PATH="events"
+        echo "EVENT_FOLDER_FOLDER_RELATIVE_PATH=$EVENT_FOLDER_FOLDER_RELATIVE_PATH" >> $GITHUB_OUTPUT
         
         EVENT_FOLDER="${{ inputs.auditing-folder-path }}/events"
         echo "EVENT_FOLDER=$EVENT_FOLDER" >> $GITHUB_OUTPUT
@@ -48,6 +51,9 @@ runs:
         
         SCAN_RESULT="$SCAN_RESULT_FOLDER/result-$ACTION_START_TIME.json"
         echo "SCAN_RESULT=$SCAN_RESULT" >> $GITHUB_OUTPUT
+
+        EVENT_DETAIL_FILE_RELATIVE_PATH="$EVENT_FOLDER_FOLDER_RELATIVE_PATH/event-$ACTION_START_TIME.json"
+        echo "EVENT_DETAIL_FILE_RELATIVE_PATH=$EVENT_DETAIL_FILE_RELATIVE_PATH" >> $GITHUB_OUTPUT
         
         EVENT_DETAIL="$EVENT_FOLDER/event-$ACTION_START_TIME.json"
         echo "EVENT_DETAIL=$EVENT_DETAIL" >> $GITHUB_OUTPUT
@@ -124,7 +130,7 @@ runs:
            echo '"Initiator": "${{ github.triggering_actor }}",'
            echo '"Ref": "${{ github.ref }}",'
            echo '"Event_Name": "${{ github.event_name }}",'
-           echo '"Event_Path": "${{ steps.parameters.outputs.EVENT_DETAIL }}"'
+           echo '"Event_Path": "${{ steps.parameters.outputs.EVENT_DETAIL_FILE_RELATIVE_PATH }}"'
            echo '},'
          }  >>"${{steps.parameters.outputs.AUDITING_ITEM}}"
         

@@ -21,7 +21,11 @@ runs:
       shell: bash
       run: |
         echo "----PARAMETERS------------------------------------------------------"
-        SCAN_RESULT_FOLDER="${{ inputs.auditing-folder-path }}/scan-results"
+
+        SCAN_RESULT_FOLDER_RELATIVE_PATH="scan-results"
+        echo "SCAN_RESULT_FOLDER_RELATIVE_PATH=$SCAN_RESULT_FOLDER_RELATIVE_PATH" >> $GITHUB_OUTPUT
+        
+        SCAN_RESULT_FOLDER="${{ inputs.auditing-folder-path }}/$SCAN_RESULT_FOLDER_RELATIVE_PATH"
         echo "SCAN_RESULT_FOLDER=$SCAN_RESULT_FOLDER" >> $GITHUB_OUTPUT
         
         EVENT_FOLDER="${{ inputs.auditing-folder-path }}/events"
@@ -38,6 +42,9 @@ runs:
         
         ACTION_START_TIME=$(date +%s)
         echo "ACTION_START_TIME=$ACTION_START_TIME" >> $GITHUB_OUTPUT
+
+        SCAN_RESULT_FILE_RELATIVE_PATH="$SCAN_RESULT_FOLDER_RELATIVE_PATH/result-$ACTION_START_TIME.json"
+        echo "SCAN_RESULT_FILE_RELATIVE_PATH=$SCAN_RESULT_FILE_RELATIVE_PATH" >> $GITHUB_OUTPUT
         
         SCAN_RESULT="$SCAN_RESULT_FOLDER/result-$ACTION_START_TIME.json"
         echo "SCAN_RESULT=$SCAN_RESULT" >> $GITHUB_OUTPUT
@@ -112,7 +119,7 @@ runs:
         {
            echo '{'
            echo '"Id": "${{steps.parameters.outputs.ACTION_START_TIME}}",'
-           echo '"Url": "${{steps.parameters.outputs.SCAN_RESULT}}",'
+           echo '"Url": "${{steps.parameters.outputs.SCAN_RESULT_FILE_RELATIVE_PATH}}",'
            echo '"Sha": "${{ github.sha }}",'
            echo '"Initiator": "${{ github.triggering_actor }}",'
            echo '"Ref": "${{ github.ref }}",'

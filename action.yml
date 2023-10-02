@@ -131,7 +131,7 @@ runs:
            echo '"Ref": "${{ github.ref }}",'
            echo '"Event_Name": "${{ github.event_name }}",'
            echo '"Event_Path": "${{ steps.parameters.outputs.EVENT_DETAIL_FILE_RELATIVE_PATH }}"'
-           echo '},'
+           echo '}'
          }  >>"${{steps.parameters.outputs.AUDITING_ITEM}}"
         
          echo "${{steps.parameters.outputs.AUDITING_ITEM}} has been created!"
@@ -140,8 +140,10 @@ runs:
       run: |
         echo "----Adding Scan Details to Audit db------------------------------------------------------"
         audit_file_content="abc.json"
+        audit_file_exists="0"
         if [ -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
            echo "${{steps.parameters.outputs.AUDITING_FILE}} does exist!"
+           audit_file_exists="1"
            cat "${{steps.parameters.outputs.AUDITING_FILE}}" >>"$audit_file_content"
         fi
         if [ ! -f ${{steps.parameters.outputs.AUDITING_FILE}} ]; then
@@ -155,14 +157,19 @@ runs:
            }  >>"$audit_file_content"
         fi
         
-        # copy audit file except the last line which is '}' character of json 
+        # copy audit file except for the last line which is ']}' character of json 
         head -n -1 "$audit_file_content" > "${{steps.parameters.outputs.AUDITING_FILE}}"
+        if [ $audit_file_exists == "1" ]; then
+           echo "${{steps.parameters.outputs.AUDITING_FILE}} does exist! so that adding a comma!"
+           echo ',' >>"${{steps.parameters.outputs.AUDITING_FILE}}"
+        fi
         cat "${{steps.parameters.outputs.AUDITING_ITEM}}" >>"${{steps.parameters.outputs.AUDITING_FILE}}"
         cat 
         {
            echo ''
            echo ']}'
          } >>"${{steps.parameters.outputs.AUDITING_FILE}}"
+       
         echo "${{steps.parameters.outputs.AUDITING_FILE}} has been created!"
         # remove tmp
         rm -f ${{steps.parameters.outputs.AUDITING_ITEM}}
